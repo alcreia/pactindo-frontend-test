@@ -1,9 +1,4 @@
-<script setup lang="ts">
-function userLogin(e: Event) {
-  e.preventDefault();
-  console.log("Hehe");
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <v-container width="400">
@@ -21,9 +16,7 @@ function userLogin(e: Event) {
         label="Password"
         @click:append="show = !show"
       ></v-text-field>
-      <v-btn @click="userLogin">
-        Login
-      </v-btn>
+      <v-btn @click="userLogin"> Login </v-btn>
     </v-form>
   </v-container>
 </template>
@@ -50,16 +43,14 @@ export default {
     },
   },
   methods: {
-    validateEmail() {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
-        console.log("Invalid Email");
-      } else {
-        console.log("Valid Email");
-      }
+    userLogin() {
+      this.$store
+        .dispatch("login")
+        .then(() => this.$router.push("/"))
+        .catch((err) => console.log(err));
     },
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

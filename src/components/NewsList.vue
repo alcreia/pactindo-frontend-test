@@ -9,6 +9,7 @@
           v-model="query"
           label="Search for a news topic..."
           required
+          @change="setQuery"
         ></v-text-field>
       </v-col>
       <v-col cols="6">
@@ -19,6 +20,7 @@
           item-title="text"
           density="comfortable"
           class="col-6"
+          @change="setQuery"
         ></v-select>
       </v-col>
       <v-col cols="6">
@@ -29,6 +31,7 @@
           item-title="text"
           density="comfortable"
           class="col-6"
+          @change="setQuery"
         ></v-select>
       </v-col>
     </v-row>
@@ -48,7 +51,6 @@
 
 <script>
 import NewsCard from "./NewsCard.vue";
-import testData from "../testData.json";
 
 export default {
   components: {
@@ -87,25 +89,26 @@ export default {
     };
   },
   methods: {
-    debounce(func, timeout = 800) {
-      let timer;
-      return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          func.apply(this, args);
-        }, timeout);
-      };
+    setQuery() {
+      let url = `https://newsapi.org/v2/top-headlines?`;
+      if (this.query) {
+        url += `q=${this.query}`;
+      }
+      if (this.language) {
+        url += `&language=${this.language}`;
+      }
+      if (this.category) {
+        url += `&category=${this.category}`;
+      }
+      url += "&apiKey=34f9410a18cf435ca082d7d567154141";
+      console.log(url);
+      this.getNews(url);
     },
-    async getNews() {
-      const res = await fetch(
-        "https://newsapi.org/v2/top-headlines?q=tesla&apiKey=34f9410a18cf435ca082d7d567154141"
-      );
-      const jsonData = await res.json();
-      this.newsData = jsonData.articles;
+    async getNews(url) {
+      const res = await fetch(url);
+      const data = await res.json();
+      this.newsData = data.articles;
     },
-  },
-  mounted() {
-    this.newsData = testData.articles;
   },
 };
 </script>

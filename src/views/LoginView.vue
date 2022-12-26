@@ -5,7 +5,6 @@ import { useStore } from "vuex";
 
 <template>
   <div class="about">
-    <h1>Login</h1>
     <LoginForm />
   </div>
 </template>

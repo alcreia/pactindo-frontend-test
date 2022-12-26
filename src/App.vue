@@ -7,12 +7,30 @@ import { RouterLink, RouterView } from "vue-router";
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/login">Login</RouterLink>
+      <span v-if="isLoggedIn"> | <a @click="logout">Logout</a></span>
     </nav>
   </header>
   <div class="content">
     <RouterView />
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  computed: {
+    isLoggedIn: function () {
+      return this.$store.getters.isLoggedIn;
+    },
+  },
+  methods: {
+    logout: function () {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .header {
